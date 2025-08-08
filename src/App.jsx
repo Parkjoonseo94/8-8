@@ -1,41 +1,58 @@
-import React, { Component, useState } from "react";
+import { Component, useState } from "react";
 import "./App.css";
 
 // ----------- 함수형 컴포넌트 ------------
 function App() {
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(0);
+  const [inputValue, setInputValue] = useState(0);
+
+  const incrementCounter = () => {
+  setCounter(counter + 1)
+  }
+
+  const decrementCounter = () => {
+    setCounter(counter - 1)
+  }
+
+  const setCounterNumber = () => {
+    setCounter(inputValue)
+  }
+
   return (
-  <>
+    <>
       <Count counter={counter} />
-      <PlusButton setCounter={setCounter} />
-      <MinusButton setCounter={setCounter} />
-  </>
+      <PlusButton setCounter={setCounter} incrementCounter={incrementCounter} />
+      <MinusButton setCounter={setCounter} decrementCounter={decrementCounter} />
+      <CounterInput 
+        inputValue={inputValue} 
+        setInputValue={setInputValue} 
+        setCounterNumber={setCounterNumber}
+      />
+    </>
   )
 }
 
-function PlusButton({setCounter}) {
+function CounterInput({ inputValue, setInputValue, setCounterNumber }) {
   return (
-    <button 
-      onClick={() => {
-        setCounter((prev) => prev + 1);
-      }}
-    >
-      +
-    </button>
+    <>
+      <input 
+        type="number" 
+        value={inputValue} 
+        onChange={(event) => 
+          setInputValue(event.target.value)}
+      />
+      <button onClick={setCounterNumber}>입력</button>
+    </>
   );
 }
 
+function PlusButton({ setCounter, incrementCounter }) {
+  return <button onClick={incrementCounter}>+</button>;
+}
 
-function MinusButton({setCounter}) {
-  return (
-    <button 
-      onClick={() => {
-        setCounter((prev) => prev - 1);
-      }}
-    >
-      -
-    </button>
-  );
+
+function MinusButton({ setCounter, decrementCounter }) {
+  return <button onClick={decrementCounter}>-</button>;
 }
 
 function Count ({counter}) {
